@@ -1,0 +1,22 @@
+<div class="page">
+  <h2>Currency Converter</h2>
+
+  <div class="converter-form">
+    <input [(ngModel)]="amount" type="number" placeholder="Amount" />
+    <select [(ngModel)]="from">
+      <option *ngFor="let c of currencies | keyvalue" [value]="c.key">{{ c.key }} - {{ c.value }}</option>
+    </select>
+    <span>→</span>
+    <select [(ngModel)]="to">
+      <option *ngFor="let c of currencies | keyvalue" [value]="c.key">{{ c.key }} - {{ c.value }}</option>
+    </select>
+    <button (click)="convert()">Convert</button>
+  </div>
+
+  <p *ngIf="error" class="error">{{ error }}</p>
+
+  <div *ngIf="result" class="result-card">
+    <h3>{{ result.amount }} {{ result.from }} = {{ result.result }} {{ result.to }}</h3>
+    <p>Rate: 1 {{ result.from }} = {{ result.rate }} {{ result.to }}</p>
+  </div>
+</div>

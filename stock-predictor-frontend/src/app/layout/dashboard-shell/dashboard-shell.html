@@ -1,0 +1,25 @@
+<div class="shell">
+  <aside class="sidebar">
+    <h3>Stock Predictor</h3>
+    <nav>
+      <a routerLink="/dashboard">Home</a>
+      <a routerLink="/dashboard/predictor">Predict Prices</a>
+      <a routerLink="/dashboard/live-prices">Live Prices</a>
+      <a routerLink="/dashboard/news">Stock News</a>
+      <a routerLink="/dashboard/currency">Currency Converter</a>
+      <a routerLink="/dashboard/education">Learn Stocks</a>
+      <a routerLink="/dashboard/tickers">Download Tickers</a>
+      <a routerLink="/dashboard/profile">My Profile</a>
+      <ng-container *ngIf="auth.isAdmin()">
+        <hr />
+        <a routerLink="/dashboard/admin/users">Manage Users</a>
+        <a routerLink="/dashboard/admin/emails">Trigger Emails</a>
+      </ng-container>
+    </nav>
+    <button (click)="logout()">Logout</button>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

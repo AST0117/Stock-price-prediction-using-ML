@@ -1,0 +1,47 @@
+<div class="container">
+  <h1>Stock Market Predictor</h1>
+
+  <div class="search-bar">
+    <input [(ngModel)]="ticker" placeholder="e.g. AAPL or TCS.NS" (keyup.enter)="search()" />
+    <button (click)="search()" [disabled]="loading">
+      {{ loading ? 'Predicting...' : 'Predict' }}
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="spinner-wrap">
+    <div class="spinner"></div>
+    <p>Running models, please wait (LSTM can take 15–30s)...</p>
+  </div>
+
+  <p *ngIf="error" class="error">{{ error }}</p>
+
+  <div *ngIf="result && !loading">
+    <h2>{{ ticker.toUpperCase() }}</h2>
+
+    <canvas #stockChart width="800" height="400"></canvas>
+
+    <div class="verdict-card" [ngClass]="getVerdictClass()">
+      <h2>{{ result.recommendation.verdict }}</h2>
+      <p>Sentiment: {{ result.recommendation.sentiment.label }} ({{ result.recommendation.sentiment.sentiment_score }})</p>
+    </div>
+
+    <div class="model-grid">
+      <div class="model-card">
+        <h3>Linear Regression</h3>
+        <p>{{ result.recommendation.linear.forecast }}</p>
+      </div>
+      <div class="model-card">
+        <h3>ARIMA</h3>
+        <p>{{ result.recommendation.arima.forecast }}</p>
+      </div>
+      <div class="model-card">
+        <h3>LSTM</h3>
+        <p>{{ result.recommendation.lstm.forecast }}</p>
+      </div>
+    </div>
+
+    <p class="disclaimer">
+      ⚠️ This is an educational project, not financial advice. Predictions are based on historical patterns and news sentiment and may not reflect actual market movement.
+    </p>
+  </div>
+</div>

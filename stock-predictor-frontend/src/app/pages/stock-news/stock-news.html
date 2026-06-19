@@ -1,0 +1,19 @@
+<div class="page">
+  <h2>Stock News</h2>
+  <div class="search-bar">
+    <input [(ngModel)]="ticker" placeholder="e.g. AAPL" (keyup.enter)="search()" />
+    <button (click)="search()">Search</button>
+  </div>
+
+  <p *ngIf="loading">Loading news...</p>
+  <p *ngIf="error" class="error">{{ error }}</p>
+  <p *ngIf="!loading && articles.length === 0 && !error">No recent news found.</p>
+
+  <div class="news-list">
+    <a *ngFor="let a of articles" [href]="a.url" target="_blank" class="news-card">
+      <h4>{{ a.title }}</h4>
+      <p>{{ a.description }}</p>
+      <span class="meta">{{ a.source }} • {{ a.published_at | slice:0:10 }}</span>
+    </a>
+  </div>
+</div>

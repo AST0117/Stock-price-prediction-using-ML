@@ -1,0 +1,8 @@
+<div class="auth-container">
+  <h2>Login</h2>
+  <input [(ngModel)]="email" placeholder="Email" type="email" />
+  <input [(ngModel)]="password" placeholder="Password" type="password" />
+  <button (click)="submit()" [disabled]="loading">{{ loading ? 'Logging in...' : 'Login' }}</button>
+  <p *ngIf="error" class="error">{{ error }}</p>
+  <p>No account? <a routerLink="/register">Register here</a></p>
+</div>

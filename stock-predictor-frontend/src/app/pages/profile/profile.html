@@ -1,0 +1,25 @@
+<div class="page">
+  <h2>My Profile</h2>
+
+  <p *ngIf="error" class="error">{{ error }}</p>
+  <p *ngIf="success" class="success">{{ success }}</p>
+
+  <div class="profile-form">
+    <label>Name</label>
+    <input [(ngModel)]="form.name" placeholder="Full Name" />
+
+    <label>Email</label>
+    <input [(ngModel)]="form.email" placeholder="Email" type="email" />
+
+    <label>New Password (leave blank to keep current)</label>
+    <input [(ngModel)]="form.password" placeholder="New password" type="password" />
+
+    <button (click)="save()">Save Changes</button>
+  </div>
+
+  <div class="danger-zone">
+    <h3>Danger Zone</h3>
+    <p>Deleting your account is permanent and cannot be undone.</p>
+    <button (click)="deleteAccount()" class="danger">Delete My Account</button>
+  </div>
+</div>

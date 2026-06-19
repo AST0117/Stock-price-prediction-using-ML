@@ -1,0 +1,21 @@
+<div class="page">
+  <h2>Trigger Emails</h2>
+
+  <div class="email-form">
+    <label>Recipient</label>
+    <select [(ngModel)]="target">
+      <option value="all">All Users</option>
+    </select>
+
+    <label>Subject</label>
+    <input [(ngModel)]="subject" placeholder="Email subject" />
+
+    <label>Body</label>
+    <textarea [(ngModel)]="body" rows="6" placeholder="Email message"></textarea>
+
+    <button (click)="send()" [disabled]="sending">{{ sending ? 'Sending...' : 'Send Email' }}</button>
+  </div>
+
+  <p *ngIf="message" class="success">{{ message }}</p>
+  <p *ngIf="error" class="error">{{ error }}</p>
+</div>

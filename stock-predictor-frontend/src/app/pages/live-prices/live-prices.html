@@ -1,0 +1,29 @@
+<div class="page">
+  <h2>Live Stock Prices</h2>
+  <p class="note">Prices refresh every 15 seconds. Data may be delayed ~15 minutes (free data source).</p>
+
+  <div class="search-bar">
+    <input [(ngModel)]="ticker" placeholder="e.g. AAPL or TCS.NS" (keyup.enter)="addTicker()" />
+    <button (click)="addTicker()">Track</button>
+  </div>
+
+  <div class="price-grid">
+    <div *ngFor="let t of trackedTickers" class="price-card">
+      <div class="price-card-header">
+        <h3>{{ t }}</h3>
+        <button class="remove-btn" (click)="removeTicker(t)">✕</button>
+      </div>
+
+      <ng-container *ngIf="prices[t] && !prices[t].error">
+        <p class="price">{{ prices[t].price }} {{ prices[t].currency }}</p>
+        <p [ngClass]="prices[t].change >= 0 ? 'positive' : 'negative'">
+          {{ prices[t].change >= 0 ? '▲' : '▼' }} {{ prices[t].change }} ({{ prices[t].change_pct }}%)
+        </p>
+        <p class="meta">High: {{ prices[t].day_high }} | Low: {{ prices[t].day_low }}</p>
+      </ng-container>
+
+      <p *ngIf="prices[t]?.error" class="error">{{ prices[t].error }}</p>
+      <p *ngIf="!prices[t]">Loading...</p>
+    </div>
+  </div>
+</div>

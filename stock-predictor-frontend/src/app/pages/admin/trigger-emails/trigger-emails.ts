@@ -1,0 +1,38 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-trigger-emails',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './trigger-emails.html'
+})
+export class TriggerEmails {
+  subject = '';
+  body = '';
+  target = 'all';
+  message = '';
+  error = '';
+  sending = false;
+
+  constructor(private http: HttpClient) {}
+
+  send() {
+    if (!this.subject || !this.body) {
+      this.error = 'Subject and body are required.';
+      return;
+    }
+    this.sending = true;
+    this.error = '';
+    this.message = '';
+
+    this.http.post<any>('http://localhost:5000/api/admin/send-email', {
+      subject: this.subject, body: this.body, target: this.target
+    }).subscribe({
+      next: (res) => { this.message = res.message; this.sending = false; },
+      error: (err) => { this.error = err.error?.error || 'Failed to send.'; this.sending = false; }
+    });
+  }
+}

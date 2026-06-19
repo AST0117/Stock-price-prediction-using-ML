@@ -1,0 +1,40 @@
+# Node
+node_modules/
+**/node_modules/
+
+# Python virtual envs
+venv/
+.venv/
+**/venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Angular
+dist/
+.angular/
+
+# Environment
+.env
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+**/.env
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# SQLite databases
+*.db
+
+# VS Code
+.vscode/
