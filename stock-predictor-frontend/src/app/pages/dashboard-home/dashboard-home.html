@@ -1,1 +1,46 @@
-<p>dashboard-home works!</p>
+<div class="page">
+  <div class="welcome-banner">
+    <h1>{{ getGreeting() }}, {{ auth.getUser()?.name }} 👋</h1>
+    <p>Welcome to your Stock Market Predictor dashboard. Here's a quick snapshot and shortcuts to get started.</p>
+  </div>
+
+  <h3 class="section-title">Market Snapshot</h3>
+  <div class="snapshot-grid">
+    <div *ngFor="let t of snapshotTickers" class="snapshot-card">
+      <h4>{{ t }}</h4>
+      <ng-container *ngIf="snapshotData[t] && !snapshotData[t].error">
+        <p class="price">{{ snapshotData[t].price }} {{ snapshotData[t].currency }}</p>
+        <p [ngClass]="snapshotData[t].change >= 0 ? 'positive' : 'negative'">
+          {{ snapshotData[t].change >= 0 ? '▲' : '▼' }} {{ snapshotData[t].change_pct }}%
+        </p>
+      </ng-container>
+      <p *ngIf="snapshotData[t]?.error" class="unavailable">Unavailable</p>
+      <p *ngIf="!snapshotData[t]">Loading...</p>
+    </div>
+  </div>
+
+  <h3 class="section-title">Quick Actions</h3>
+  <div class="feature-grid">
+    <a *ngFor="let f of features" [routerLink]="f.link" class="feature-card">
+      <div class="feature-icon">{{ f.icon }}</div>
+      <h4>{{ f.title }}</h4>
+      <p>{{ f.desc }}</p>
+    </a>
+  </div>
+
+  <div *ngIf="auth.isAdmin()" class="admin-section">
+    <h3 class="section-title">Admin Tools</h3>
+    <div class="feature-grid">
+      <a routerLink="/dashboard/admin/users" class="feature-card admin-card">
+        <div class="feature-icon">👥</div>
+        <h4>Manage Users</h4>
+        <p>Create, edit, and delete user accounts</p>
+      </a>
+      <a routerLink="/dashboard/admin/emails" class="feature-card admin-card">
+        <div class="feature-icon">✉️</div>
+        <h4>Trigger Emails</h4>
+        <p>Send manual announcements to all users</p>
+      </a>
+    </div>
+  </div>
+</div>

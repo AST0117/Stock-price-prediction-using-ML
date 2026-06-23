@@ -5,13 +5,15 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
 from utils.validators import validate_ticker
-
+import pandas as pd
 predict_lstm_bp = Blueprint("predict_lstm", __name__)
 LOOKBACK = 60
 
 def run_lstm(ticker):
     try:
         data = yf.download(ticker, period="1y", interval="1d", progress=False)
+        if isinstance(data.columns, pd.MultiIndex):
+            data.columns = data.columns.get_level_values(0)
         if data.empty or len(data) < LOOKBACK + 7:
             return {"error": "Not enough historical data for LSTM (needs 1+ year)"}
 

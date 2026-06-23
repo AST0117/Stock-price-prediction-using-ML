@@ -1,11 +1,25 @@
 <div class="container">
   <h1>Stock Market Predictor</h1>
 
-  <div class="search-bar">
-    <input [(ngModel)]="ticker" placeholder="e.g. AAPL or TCS.NS" (keyup.enter)="search()" />
+  <div class="search-bar autocomplete-wrap">
+    <input
+      [(ngModel)]="ticker"
+      (input)="onTickerInput()"
+      (focus)="showSuggestions = suggestions.length > 0"
+      (blur)="hideSuggestions()"
+      placeholder="e.g. AAPL, Apple, TCS, Tata Consultancy..."
+      (keyup.enter)="search()"
+      autocomplete="off"
+    />
     <button (click)="search()" [disabled]="loading">
       {{ loading ? 'Predicting...' : 'Predict' }}
     </button>
+
+    <div *ngIf="showSuggestions" class="suggestions-dropdown">
+      <div *ngFor="let s of suggestions" class="suggestion-item" (mousedown)="selectSuggestion(s)">
+        <strong>{{ s.symbol }}</strong> — {{ s.name }} <span class="exchange-tag">{{ s.exchange }}</span>
+      </div>
+    </div>
   </div>
 
   <div *ngIf="loading" class="spinner-wrap">
@@ -20,6 +34,10 @@
 
     <canvas #stockChart width="800" height="400"></canvas>
 
+    <div *ngIf="modelWarnings.length > 0" class="model-warnings">
+      <p *ngFor="let w of modelWarnings">⚠️ {{ w }}</p>
+    </div>
+
     <div class="verdict-card" [ngClass]="getVerdictClass()">
       <h2>{{ result.recommendation.verdict }}</h2>
       <p>Sentiment: {{ result.recommendation.sentiment.label }} ({{ result.recommendation.sentiment.sentiment_score }})</p>
@@ -28,15 +46,18 @@
     <div class="model-grid">
       <div class="model-card">
         <h3>Linear Regression</h3>
-        <p>{{ result.recommendation.linear.forecast }}</p>
+        <p *ngIf="result.recommendation.linear?.forecast">{{ result.recommendation.linear.forecast }}</p>
+        <p *ngIf="!result.recommendation.linear?.forecast" class="unavailable">Unavailable</p>
       </div>
       <div class="model-card">
         <h3>ARIMA</h3>
-        <p>{{ result.recommendation.arima.forecast }}</p>
+        <p *ngIf="result.recommendation.arima?.forecast">{{ result.recommendation.arima.forecast }}</p>
+        <p *ngIf="!result.recommendation.arima?.forecast" class="unavailable">Unavailable</p>
       </div>
       <div class="model-card">
         <h3>LSTM</h3>
-        <p>{{ result.recommendation.lstm.forecast }}</p>
+        <p *ngIf="result.recommendation.lstm?.forecast">{{ result.recommendation.lstm.forecast }}</p>
+        <p *ngIf="!result.recommendation.lstm?.forecast" class="unavailable">Unavailable</p>
       </div>
     </div>
 

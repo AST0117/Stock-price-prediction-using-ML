@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 import yfinance as yf
 from utils.validators import validate_ticker
+import pandas as pd
 
 stock_data_bp = Blueprint("stock_data", __name__)
 
@@ -16,8 +17,16 @@ def get_history(ticker):
         if data.empty:
             return jsonify({"error": f"No historical data available for {ticker}"}), 404
 
+        # Flatten MultiIndex columns if present (newer yfinance versions)
+        if isinstance(data.columns, pd.MultiIndex):
+            data.columns = data.columns.get_level_values(0)
+
         result = [
-            {"date": str(idx.date()), "close": round(float(row["Close"]), 2), "volume": int(row["Volume"])}
+            {
+                "date": str(idx.date()),
+                "close": round(float(row["Close"]), 2),
+                "volume": int(row["Volume"])
+            }
             for idx, row in data.iterrows()
         ]
         return jsonify({"ticker": ticker, "history": result})

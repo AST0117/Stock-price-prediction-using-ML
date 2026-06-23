@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 import yfinance as yf
 from utils.validators import validate_ticker
-
+import pandas as pd
 live_price_bp = Blueprint("live_price", __name__)
 
 @live_price_bp.route("/api/stock/<ticker>/price")

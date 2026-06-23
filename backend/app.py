@@ -16,11 +16,17 @@ from blueprints.live_price import live_price_bp
 from blueprints.news import news_bp
 from blueprints.currency import currency_bp
 from blueprints.tickers import tickers_bp
-
+from blueprints.ticker_search import ticker_search_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
-CORS(app)
+from flask_cors import CORS
+
+CORS(
+    app,
+    resources={r"/api/*": {"origins": "*"}},
+    supports_credentials=True
+)
 
 db.init_app(app)
 jwt.init_app(app)
@@ -38,9 +44,14 @@ app.register_blueprint(live_price_bp)
 app.register_blueprint(news_bp)
 app.register_blueprint(currency_bp)
 app.register_blueprint(tickers_bp)
+app.register_blueprint(ticker_search_bp)
 
 with app.app_context():
     db.create_all()  # creates tables on first run
+
+@app.route("/health")
+def health():
+    return {"status": "ok"}, 200
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000, threaded=True)

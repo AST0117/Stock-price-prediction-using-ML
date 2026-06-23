@@ -2,12 +2,14 @@ from flask import Blueprint, jsonify
 import yfinance as yf
 from pmdarima import auto_arima
 from utils.validators import validate_ticker
-
+import pandas as pd
 predict_arima_bp = Blueprint("predict_arima", __name__)
 
 def run_arima(ticker):
     try:
         data = yf.download(ticker, period="6mo", interval="1d", progress=False)
+        if isinstance(data.columns, pd.MultiIndex):
+            data.columns = data.columns.get_level_values(0)
         if data.empty or len(data) < 30:
             return {"error": "Not enough data for ARIMA"}
 

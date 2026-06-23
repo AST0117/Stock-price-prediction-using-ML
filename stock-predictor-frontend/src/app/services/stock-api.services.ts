@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class StockApiService {
-  private base = 'http://localhost:5000/api';
+  private base = `${environment.apiUrl}/api`;
 
   constructor(private http: HttpClient) {}
 
@@ -30,6 +31,9 @@ export class StockApiService {
 
   getRecommendation(ticker: string): Observable<any> {
     return this.http.get(`${this.base}/recommend/${ticker}`);
+  }
+  searchTickers(query: string): Observable<any> {
+  return this.http.get(`${this.base}/tickers/search?q=${encodeURIComponent(query)}`);
   }
 
   getAll(ticker: string): Observable<any> {

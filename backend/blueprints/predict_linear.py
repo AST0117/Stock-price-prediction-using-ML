@@ -3,12 +3,14 @@ import yfinance as yf
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from utils.validators import validate_ticker
-
+import pandas as pd
 predict_linear_bp = Blueprint("predict_linear", __name__)
 
 def run_linear(ticker):
     try:
         data = yf.download(ticker, period="6mo", interval="1d", progress=False)
+        if isinstance(data.columns, pd.MultiIndex):
+            data.columns = data.columns.get_level_values(0)
         if data.empty or len(data) < 10:
             return {"error": "Not enough data for Linear Regression"}
 
