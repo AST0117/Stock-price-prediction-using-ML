@@ -204,7 +204,7 @@ Visit `http://localhost:4200`.
 
 ## 🎓 Educational Disclaimer
 
-This project was built for academic and educational purposes as part of an M.Tech curriculum. It is **not financial advice**. Stock markets are inherently volatile and unpredictable; no model, however sophisticated, can guarantee future performance. Always conduct independent research and consult a qualified financial advisor before making investment decisions.
+This project was built for academic and educational purposes. It is **not financial advice**. Stock markets are inherently volatile and unpredictable; no model, however sophisticated, can guarantee future performance. Always conduct independent research and consult a qualified financial advisor before making investment decisions.
 
 ---
 
