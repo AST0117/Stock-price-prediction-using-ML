@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
-from extensions import db, jwt
+from extensions import db, jwt, mail
 from config import Config
 
 from blueprints.auth import auth_bp
@@ -17,10 +17,12 @@ from blueprints.news import news_bp
 from blueprints.currency import currency_bp
 from blueprints.tickers import tickers_bp
 from blueprints.ticker_search import ticker_search_bp
-
+from blueprints.accuracy import accuracy_bp
+from blueprints.watchlist import watchlist_bp
+from blueprints.admin_email import admin_email_bp
 app = Flask(__name__)
 app.config.from_object(Config)
-from flask_cors import CORS
+
 
 CORS(
     app,
@@ -30,6 +32,7 @@ CORS(
 
 db.init_app(app)
 jwt.init_app(app)
+mail.init_app(app)
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(stock_data_bp)
@@ -45,6 +48,10 @@ app.register_blueprint(news_bp)
 app.register_blueprint(currency_bp)
 app.register_blueprint(tickers_bp)
 app.register_blueprint(ticker_search_bp)
+app.register_blueprint(accuracy_bp)
+app.register_blueprint(watchlist_bp)
+app.register_blueprint(admin_email_bp)
+
 
 with app.app_context():
     db.create_all()  # creates tables on first run

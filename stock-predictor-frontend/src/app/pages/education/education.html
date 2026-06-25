@@ -1,7 +1,42 @@
 <div class="page">
   <h2>Learn About Stocks</h2>
-  <div class="edu-card" *ngFor="let t of topics">
-    <h3>{{ t.title }}</h3>
-    <p>{{ t.content }}</p>
+
+  <div class="edu-card" *ngIf="accuracySummary.length > 0">
+    <h3>📊 Real Model Accuracy (Live Tracking)</h3>
+    <p>We track every prediction our system makes against actual market outcomes. Here's how each model has performed so far:</p>
+    <table class="user-table" style="margin-top:12px;">
+      <thead>
+        <tr><th>Model</th><th>Avg Error %</th><th>Predictions Checked</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of accuracySummary">
+          <td>{{ s.model }}</td>
+          <td>{{ s.avg_error_pct }}%</td>
+          <td>{{ s.predictions_checked }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngFor="let cat of categories" class="edu-category">
+    <h3 class="category-heading">{{ cat.icon }} {{ cat.name }}</h3>
+
+    <div class="edu-card expandable" *ngFor="let t of cat.topics" (click)="toggle(t)">
+      <div class="edu-card-header">
+        <h4>{{ t.title }}</h4>
+        <span class="chevron" [class.open]="t.expanded">▾</span>
+      </div>
+      <p *ngIf="t.expanded">{{ t.content }}</p>
+    </div>
+  </div>
+
+  <div class="edu-category">
+    <h3 class="category-heading">📖 Glossary</h3>
+    <div class="glossary-grid">
+      <div class="glossary-item" *ngFor="let g of glossary">
+        <strong>{{ g.term }}</strong>
+        <p>{{ g.definition }}</p>
+      </div>
+    </div>
   </div>
 </div>

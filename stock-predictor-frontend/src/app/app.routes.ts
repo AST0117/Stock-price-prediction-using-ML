@@ -13,8 +13,10 @@ import { TickerDownload } from './pages/ticker-download/ticker-download';
 import { Education } from './pages/education/education';
 import { TriggerEmails } from './pages/admin/trigger-emails/trigger-emails';
 import { authGuard, adminGuard } from './core/auth.guard';
+import { Landing } from './pages/landing/landing';
 
 export const routes: Routes = [
+  { path: '', component: Landing },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   {

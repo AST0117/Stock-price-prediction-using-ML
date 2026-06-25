@@ -14,6 +14,9 @@
     <textarea [(ngModel)]="body" rows="6" placeholder="Email message"></textarea>
 
     <button (click)="send()" [disabled]="sending">{{ sending ? 'Sending...' : 'Send Email' }}</button>
+    <h3>Prediction Accuracy</h3>
+    <button (click)="checkAccuracy()">Run Accuracy Check</button>
+    <p *ngIf="accuracyMessage">{{ accuracyMessage }}</p>
   </div>
 
   <p *ngIf="message" class="success">{{ message }}</p>

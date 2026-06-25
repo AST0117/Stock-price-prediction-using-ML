@@ -18,6 +18,13 @@ export class TriggerEmails {
   sending = false;
 
   constructor(private http: HttpClient) {}
+  accuracyMessage = '';
+  checkAccuracy() {
+    this.http.post<any>(`${environment.apiUrl}/api/accuracy/check`, {}).subscribe({
+      next: (res) => { this.accuracyMessage = res.message; },
+      error: () => { this.accuracyMessage = 'Failed to run check.'; }
+    });
+  }
 
   send() {
     if (!this.subject || !this.body) {
@@ -28,7 +35,7 @@ export class TriggerEmails {
     this.error = '';
     this.message = '';
 
-    this.http.post<any>('${environment.apiUrl}/api/admin/send-email', {
+    this.http.post<any>(`${environment.apiUrl}/api/admin/send-email`, {
       subject: this.subject, body: this.body, target: this.target
     }).subscribe({
       next: (res) => { this.message = res.message; this.sending = false; },

@@ -219,6 +219,19 @@ export class PredictorPage {
       this.modelWarnings.push('LSTM unavailable for this ticker (needs 1+ year of history).');
     }
 
+    if (res.recommendation?.ensemble_forecast) {
+    datasets.push({
+      label: 'Ensemble (Weighted Avg)',
+      data: pad(res.recommendation.ensemble_forecast),
+      borderColor: '#9333ea',
+      borderWidth: 4,
+      borderDash: [6, 3],
+      pointRadius: 5,
+      pointBackgroundColor: '#9333ea',
+      fill: false
+    });
+    }
+
     this.chart = new Chart(this.chartRef.nativeElement, {
       type: 'line',
       data: { labels, datasets },

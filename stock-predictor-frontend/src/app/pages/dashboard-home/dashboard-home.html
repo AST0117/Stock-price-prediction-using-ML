@@ -1,23 +1,48 @@
 <div class="page">
   <div class="welcome-banner">
     <h1>{{ getGreeting() }}, {{ auth.getUser()?.name }} 👋</h1>
-    <p>Welcome to your Stock Market Predictor dashboard. Here's a quick snapshot and shortcuts to get started.</p>
+    <p>Welcome to your Stock Market Predictor dashboard. Here's your watchlist and quick shortcuts.</p>
   </div>
 
-  <h3 class="section-title">Market Snapshot</h3>
-  <div class="snapshot-grid">
-    <div *ngFor="let t of snapshotTickers" class="snapshot-card">
-      <h4>{{ t }}</h4>
-      <ng-container *ngIf="snapshotData[t] && !snapshotData[t].error">
-        <p class="price">{{ snapshotData[t].price }} {{ snapshotData[t].currency }}</p>
-        <p [ngClass]="snapshotData[t].change >= 0 ? 'positive' : 'negative'">
-          {{ snapshotData[t].change >= 0 ? '▲' : '▼' }} {{ snapshotData[t].change_pct }}%
-        </p>
-      </ng-container>
-      <p *ngIf="snapshotData[t]?.error" class="unavailable">Unavailable</p>
-      <p *ngIf="!snapshotData[t]">Loading...</p>
+  <h3 class="section-title">My Watchlist</h3>
+
+  <div class="search-bar autocomplete-wrap" style="max-width: 400px;">
+    <input
+      [(ngModel)]="newTicker"
+      (input)="onTickerInput()"
+      (focus)="showSuggestions = suggestions.length > 0"
+      (blur)="hideSuggestions()"
+      placeholder="Add a stock (e.g. AAPL, Apple)..."
+      (keyup.enter)="addToWatchlist()"
+      autocomplete="off"
+    />
+    <button (click)="addToWatchlist()">Add</button>
+
+    <div *ngIf="showSuggestions" class="suggestions-dropdown">
+      <div *ngFor="let s of suggestions" class="suggestion-item" (mousedown)="selectSuggestion(s)">
+        <strong>{{ s.symbol }}</strong> — {{ s.name }} <span class="exchange-tag">{{ s.exchange }}</span>
+      </div>
     </div>
   </div>
+  <p *ngIf="watchlistError" class="error">{{ watchlistError }}</p>
+
+  <div class="snapshot-grid" *ngIf="watchlist.length > 0">
+    <div *ngFor="let item of watchlist" class="snapshot-card">
+      <div class="price-card-header">
+        <h4>{{ item.ticker }}</h4>
+        <button class="remove-btn" (click)="removeFromWatchlist(item)">✕</button>
+      </div>
+      <ng-container *ngIf="snapshotData[item.ticker] && !snapshotData[item.ticker].error">
+        <p class="price">{{ snapshotData[item.ticker].price }} {{ snapshotData[item.ticker].currency }}</p>
+        <p [ngClass]="snapshotData[item.ticker].change >= 0 ? 'positive' : 'negative'">
+          {{ snapshotData[item.ticker].change >= 0 ? '▲' : '▼' }} {{ snapshotData[item.ticker].change_pct }}%
+        </p>
+      </ng-container>
+      <p *ngIf="snapshotData[item.ticker]?.error" class="unavailable">Unavailable</p>
+      <p *ngIf="!snapshotData[item.ticker]">Loading...</p>
+    </div>
+  </div>
+  <p *ngIf="watchlist.length === 0" class="note">Your watchlist is empty — add a stock above to get started.</p>
 
   <h3 class="section-title">Quick Actions</h3>
   <div class="feature-grid">

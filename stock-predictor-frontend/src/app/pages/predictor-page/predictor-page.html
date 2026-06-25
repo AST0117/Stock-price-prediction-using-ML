@@ -44,19 +44,22 @@
     </div>
 
     <div class="model-grid">
-      <div class="model-card">
-        <h3>Linear Regression</h3>
+      <div class="model-card" [class.best-model]="result.recommendation.best_model === 'Linear Regression'">
+        <h3>Linear Regression <span *ngIf="result.recommendation.best_model === 'Linear Regression'" class="best-tag">★ Best</span></h3>
         <p *ngIf="result.recommendation.linear?.forecast">{{ result.recommendation.linear.forecast }}</p>
+        <p *ngIf="result.recommendation.linear?.rmse" class="rmse-tag">RMSE: {{ result.recommendation.linear.rmse }}</p>
         <p *ngIf="!result.recommendation.linear?.forecast" class="unavailable">Unavailable</p>
       </div>
-      <div class="model-card">
-        <h3>ARIMA</h3>
+      <div class="model-card" [class.best-model]="result.recommendation.best_model === 'ARIMA'">
+        <h3>ARIMA <span *ngIf="result.recommendation.best_model === 'ARIMA'" class="best-tag">★ Best</span></h3>
         <p *ngIf="result.recommendation.arima?.forecast">{{ result.recommendation.arima.forecast }}</p>
+        <p *ngIf="result.recommendation.arima?.rmse" class="rmse-tag">RMSE: {{ result.recommendation.arima.rmse }}</p>
         <p *ngIf="!result.recommendation.arima?.forecast" class="unavailable">Unavailable</p>
       </div>
-      <div class="model-card">
-        <h3>LSTM</h3>
+      <div class="model-card" [class.best-model]="result.recommendation.best_model === 'LSTM'">
+        <h3>LSTM <span *ngIf="result.recommendation.best_model === 'LSTM'" class="best-tag">★ Best</span></h3>
         <p *ngIf="result.recommendation.lstm?.forecast">{{ result.recommendation.lstm.forecast }}</p>
+        <p *ngIf="result.recommendation.lstm?.rmse" class="rmse-tag">RMSE: {{ result.recommendation.lstm.rmse }}</p>
         <p *ngIf="!result.recommendation.lstm?.forecast" class="unavailable">Unavailable</p>
       </div>
     </div>
